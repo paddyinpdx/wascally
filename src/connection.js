@@ -3,7 +3,6 @@ var _ = require( 'lodash' ),
 	Monologue = require( 'monologue.js' )( _ ),
 	when = require( 'when' ),
 	pipeline = require( 'when/pipeline' ),
-	bunyan = require( 'bunyan' ),
 	fs = require( 'fs' );
 
 	var Connection = function( options, broker ) {
@@ -71,7 +70,7 @@ var _ = require( 'lodash' ),
 					} );
 					this.broker.emit( 'errorLogged' );
 					this.handle = undefined;
-					this.log.error( {
+					this.log.log('error', {
 						error: err,
 						reason: 'Attempt to connect with uri "' + uri + '" failed'
 					} );

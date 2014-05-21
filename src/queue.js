@@ -16,7 +16,7 @@ module.exports = function( Broker, log ) {
 		return when.promise( function( resolve, reject ) {
 			this.getChannel( 'control', connectionName )
 				.then( null, function( err ) {
-					this.log.error( {
+					this.log.log('error', {
 						error: err,
 						reason: 'Could not get the control channel to bind queue "' + target + '" to exchange "' + source + '" with keys "' + JSON.stringify( keys ) + '"'
 					} );
@@ -32,7 +32,7 @@ module.exports = function( Broker, log ) {
 					} );
 					when.all( bindings )
 						.then( null, function( err ) {
-							this.log.error( {
+							this.log.log('error', {
 								error: err,
 								reason: 'Binding exchange "' + target + '" to exchange ""' + source + ' with keys "' + JSON.stringify( keys ) + '" failed.'
 							} );
@@ -98,7 +98,7 @@ module.exports = function( Broker, log ) {
 					}
 					result
 						.then( null, function( err ) {
-							this.log.error( {
+							this.log.log('error', {
 								error: err,
 								reason: 'Could not create queue "' + JSON.stringify( queueDef ) + '" on connection "' + connectionName + '".'
 							} );

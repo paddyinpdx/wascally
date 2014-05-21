@@ -3,7 +3,7 @@ var _ = require( 'lodash' ),
 	Monologue = require( 'monologue.js' )( _ ),
 	when = require( 'when' ),
 	pipeline = require( 'when/pipeline' ),
-	bunyan = require( 'bunyan' ),
+	winston = require( 'winston' ),
 	fs = require( 'fs' ),
 	Connection = require( './connection.js');
 
@@ -11,21 +11,17 @@ var defaultTo = function( x, y ) {
 	x = x || y;
 };
 
-var logPath = './log';
+var logPath = './';
 var dirExists = fs.existsSync( logPath );
 if ( !dirExists ) {
 	fs.mkdirSync( logPath );
 }
-var log = bunyan.createLogger( {
-	name: 'rabbitBroker',
-	streams: [ {
-		level: 'error',
-		path: logPath + '/wascally-error.log'
-	}, {
-		level: 'debug',
-		path: logPath + '/wascally-debug.log'
-	} ]
-} );
+var log = new (winston.Logger)({
+  transports: [
+    new (winston.transports.Console)(),
+    new (winston.transports.File)({ filename: 'rabbitmq.log' })
+  ]
+});
 
 var Broker = function() {
 	this._sequenceNo = 0;
@@ -101,7 +97,7 @@ Broker.prototype.getConnection = function( connectionName ) {
 				name: connectionName
 			} )
 				.then( null, function( err ) {
-					log.error( {
+					log.log('error', {
 						error: err,
 						reason: 'Could not add create a default connection for "' + connectionName + '"'
 					} );
@@ -114,7 +110,7 @@ Broker.prototype.getConnection = function( connectionName ) {
 			connection
 				.connect()
 				.then( null, function( err ) {
-					log.error( {
+					log.log('error', {
 						error: err,
 						reason: 'Could not reconnect connection "' + connectionName + '"'
 					} );

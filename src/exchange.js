@@ -17,7 +17,7 @@ module.exports = function( Broker, log ) {
 		return when.promise( function( resolve, reject ) {
 			this.getChannel( 'control', connectionName ) //Hey Alex, why are we always only binding to the control channel?
 				.then( null, function( err ) {
-					this.log.error( {
+					this.log.log('error', {
 						error: err,
 						reason: 'Could not get the control channel to bind exchange "' + target + '" to exchange ""' + source + ' with keys "' + JSON.stringify( keys ) + '"'
 					} );
@@ -33,7 +33,7 @@ module.exports = function( Broker, log ) {
 					} );
 					when.all( bindings )
 						.then( null, function( err ) {
-							this.log.error( {
+							this.log.log('error', {
 								error: err,
 								reason: 'Binding exchange "' + target + '" to exchange ""' + source + ' with keys "' + JSON.stringify( keys ) + '" failed.'
 							} );
@@ -93,7 +93,7 @@ module.exports = function( Broker, log ) {
 					}, 'persistent' );
 					var result = channel.model.assertExchange( exchangeDef.name, exchangeDef.type, valid )
 						.then( null, function( err ) {
-							this.log.error( {
+							this.log.log('error', {
 								error: err,
 								reason: 'Could not create exchange "' + JSON.stringify( exchangeDef ) + '" on connection "' + connectionName + '".'
 							} );

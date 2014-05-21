@@ -28,7 +28,7 @@ module.exports = function( Broker, log ) {
 				connection = conn;
 				configExchanges( config.exchanges, connection.name )
 					.then( null, function( err ) {
-						this.log.error( {
+						this.log.log('error', {
 							error: err,
 							reason: 'Could not configure exchanges as specified'
 						} );
@@ -39,7 +39,7 @@ module.exports = function( Broker, log ) {
 				createQueues = function() {
 					configQueues( config.queues, connection.name )
 						.then( null, function( err ) {
-							this.log.error( {
+							this.log.log('error', {
 								error: err,
 								reason: 'Could not configure queues as specified'
 							} );
@@ -50,7 +50,7 @@ module.exports = function( Broker, log ) {
 				createBindings = function() {
 					configBindings( config.bindings, connection.name )
 						.then( null, function( err ) {
-							this.log.error( {
+							this.log.log('error', {
 								error: err,
 								reason: 'Could not configure bindings as specified'
 							} );
@@ -64,7 +64,7 @@ module.exports = function( Broker, log ) {
 				};
 			this.addConnection( config.connection )
 				.then( null, function( err ) {
-					this.log.error( {
+					this.log.log('error', {
 						error: err,
 						reason: 'Could not establish the connection specified'
 					} );
